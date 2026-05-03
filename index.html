@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Rocha’s English Class</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Results Graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        /* Dark Calendar Icon */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: brightness(0) saturate(100%);
+            cursor: pointer;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Input Status Animations */
+        .input-correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #166534 !important;
+        }
+        .input-incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+        }
+        
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Word Bank Tag */
+        .word-tag {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            margin: 4px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Hidden PDF Container */
+        #pdf-export-container {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 min-h-screen pb-20">
+
+    <!-- Header & Progress Bar -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <h1 class="text-2xl font-bold text-indigo-700 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i> Mr. Rocha’s English Class
+                </h1>
+                <div class="mt-2 md:mt-0 text-sm font-medium text-gray-500" id="step-indicator">
+                    Activity <span id="current-step-num">0</span> of 6
+                </div>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4 overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-4xl mx-auto px-4 py-8 mt-4 bg-white rounded-2xl shadow-xl min-h-[60vh] relative">
+        
+        <!-- ================= SECTION 0: INTRODUCTION ================= -->
+        <section id="section-0" class="activity-section fade-in block">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-indigo-100 pb-2">Welcome!</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="flex flex-col">
+                    <label class="mb-2 font-semibold text-gray-700">Student Name</label>
+                    <input type="text" id="student-name" placeholder="Type your full name here" class="border-2 border-gray-300 rounded-lg p-3 focus:border-indigo-500 focus:ring-0 outline-none transition">
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-2 font-semibold text-gray-700">Date</label>
+                    <input type="date" id="student-date" class="border-2 border-gray-300 rounded-lg p-3 focus:border-indigo-500 outline-none transition">
+                </div>
+            </div>
+
+            <div class="bg-gray-100 rounded-xl p-4 sm:p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-video text-indigo-500"></i> Introduction Video</h3>
+                <div class="relative w-full rounded-lg overflow-hidden bg-black aspect-video flex items-center justify-center shadow-inner">
+                    <video id="video1" controls class="w-full h-full object-cover">
+                        <source src="video1.mp4" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                </div>
+                <p class="text-sm text-gray-500 mt-2 text-center">Watch the introduction video carefully.</p>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 1: ACTIVITY 1 ================= -->
+        <section id="section-1" class="activity-section fade-in hidden" data-gradable="true">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span> Activity 1: Rooms of the House</h2>
+            <p class="mb-6 text-gray-700">Match the words (1-6) with the photos (A-F). Then listen and check.</p>
+            
+            <!-- Image Placeholder -->
+            <div class="mb-8 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2">
+                <img src="image1.jpg" alt="Activity 1 Photos A-F" class="max-w-full h-auto rounded shadow-sm" onerror="this.outerHTML='<div class=\'py-12 text-center text-gray-400\'><i class=\'fa-regular fa-image text-4xl mb-2\'></i><p>image1.jpg not found in folder</p></div>'">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="act1-inputs">
+                <!-- Data answer based on standard setup -->
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">1. kitchen</label>
+                    <select data-answer="A" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">2. bedroom</label>
+                    <select data-answer="B" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">3. bathroom</label>
+                    <select data-answer="C" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">4. living room</label>
+                    <select data-answer="D" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">5. dining room</label>
+                    <select data-answer="E" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">6. yard</label>
+                    <select data-answer="F" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: ACTIVITY 2 ================= -->
+        <section id="section-2" class="activity-section fade-in hidden" data-gradable="true">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span> Activity 2: Verbs and Rooms</h2>
+            <p class="mb-4 text-gray-700">Match the verbs in the list with the rooms in Exercise 1. (Some verbs go with more than one room, choose the most common one).</p>
+            
+            <div class="bg-indigo-50 p-4 rounded-xl mb-6 text-center font-medium text-indigo-800 border border-indigo-100 shadow-sm">
+                cook | eat | play soccer | sleep | wash | watch TV
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex items-center justify-between bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm">
+                    <span class="font-bold text-lg text-gray-700 w-32">cook</span>
+                    <i class="fa-solid fa-arrow-right text-gray-400"></i>
+                    <select data-answer="kitchen" class="border border-gray-300 rounded p-2 flex-1 ml-4 act-input">
+                        <option value="">Select Room...</option>
+                        <option value="kitchen">kitchen</option> <option value="bedroom">bedroom</option>
+                        <option value="bathroom">bathroom</option> <option value="living room">living room</option>
+                        <option value="dining room">dining room</option> <option value="yard">yard</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm">
+                    <span class="font-bold text-lg text-gray-700 w-32">eat</span>
+                    <i class="fa-solid fa-arrow-right text-gray-400"></i>
+                    <select data-answer="dining room" class="border border-gray-300 rounded p-2 flex-1 ml-4 act-input">
+                        <option value="">Select Room...</option>
+                        <option value="kitchen">kitchen</option> <option value="bedroom">bedroom</option>
+                        <option value="bathroom">bathroom</option> <option value="living room">living room</option>
+                        <option value="dining room">dining room</option> <option value="yard">yard</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm">
+                    <span class="font-bold text-lg text-gray-700 w-32">play soccer</span>
+                    <i class="fa-solid fa-arrow-right text-gray-400"></i>
+                    <select data-answer="yard" class="border border-gray-300 rounded p-2 flex-1 ml-4 act-input">
+                        <option value="">Select Room...</option>
+                        <option value="kitchen">kitchen</option> <option value="bedroom">bedroom</option>
+                        <option value="bathroom">bathroom</option> <option value="living room">living room</option>
+                        <option value="dining room">dining room</option> <option value="yard">yard</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm">
+                    <span class="font-bold text-lg text-gray-700 w-32">sleep</span>
+                    <i class="fa-solid fa-arrow-right text-gray-400"></i>
+                    <select data-answer="bedroom" class="border border-gray-300 rounded p-2 flex-1 ml-4 act-input">
+                        <option value="">Select Room...</option>
+                        <option value="kitchen">kitchen</option> <option value="bedroom">bedroom</option>
+                        <option value="bathroom">bathroom</option> <option value="living room">living room</option>
+                        <option value="dining room">dining room</option> <option value="yard">yard</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm">
+                    <span class="font-bold text-lg text-gray-700 w-32">wash</span>
+                    <i class="fa-solid fa-arrow-right text-gray-400"></i>
+                    <select data-answer="bathroom" class="border border-gray-300 rounded p-2 flex-1 ml-4 act-input">
+                        <option value="">Select Room...</option>
+                        <option value="kitchen">kitchen</option> <option value="bedroom">bedroom</option>
+                        <option value="bathroom">bathroom</option> <option value="living room">living room</option>
+                        <option value="dining room">dining room</option> <option value="yard">yard</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm">
+                    <span class="font-bold text-lg text-gray-700 w-32">watch TV</span>
+                    <i class="fa-solid fa-arrow-right text-gray-400"></i>
+                    <select data-answer="living room" class="border border-gray-300 rounded p-2 flex-1 ml-4 act-input">
+                        <option value="">Select Room...</option>
+                        <option value="kitchen">kitchen</option> <option value="bedroom">bedroom</option>
+                        <option value="bathroom">bathroom</option> <option value="living room">living room</option>
+                        <option value="dining room">dining room</option> <option value="yard">yard</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: ACTIVITY 3 ================= -->
+        <section id="section-3" class="activity-section fade-in hidden" data-gradable="true">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span> Activity 3: Reading Comprehension</h2>
+            <p class="mb-4 text-gray-700">Read and listen to the magazine article. Choose the correct option A, B, or C.</p>
+            
+            <div class="mb-6 bg-gray-50 rounded-xl p-4 border border-gray-200">
+                <p class="font-medium mb-2 flex items-center gap-2"><i class="fa-solid fa-volume-high text-indigo-500"></i> Listen along:</p>
+                <audio id="audio1" controls class="w-full">
+                    <source src="audio1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+            <!-- Reading Text -->
+            <div class="bg-amber-50 p-6 rounded-xl border border-amber-100 mb-8 shadow-sm">
+                <h3 class="text-xl font-bold text-amber-900 mb-4">The 21st Century Caveman</h3>
+                <div class="text-gray-800 leading-relaxed space-y-4 font-serif">
+                    <p>In 2007, Angelo Mastropietro was in the woods in Worcestershire, UK when it started to rain. He looked for a place to keep dry and he discovered a cave house! The cave house was 800 years old. People lived in the rock-house for hundreds of years, but from about 1962, no one lived there and the house stayed empty.</p>
+                    <p>Angelo liked the rock-house very much. He looked into the possibility of buying it. It was for sale and in 2010, he decided to get it. After that, he started to cut into the rock and to rebuild and modernize the house.</p>
+                    <p>Angelo (who is English, even though his name is Italian) finished the house in nine months. He was a businessman before he started the house, and before 2007, he was quite sick, so he wanted a place where it was possible for him to live in a happy and healthy way. He realized that he didn't need to live in a huge apartment and that being closer to nature could help him feel better.</p>
+                    <p>He worked for over a thousand hours from beginning to end, and he used $200,000 to buy the house and all the things that he needed. He planned everything himself. He moved about 80 tons of rock himself and he painted the house. Angelo tried to make a comfortable place to live. The house has electricity, hot water, and wi-fi, and there is heating under the floors of the rooms. Angelo opened a deep hole 80 meters under the house to get natural water.</p>
+                    <p>The house is not huge. It is about 65 m2, with one bedroom, a living room, a kitchen, and a bathroom with a shower. Angelo doesn't live there all the time, but he uses the house as a place to go to sometimes, to get away from his busy city life. It's also possible to rent the house and to stay there for a weekend or more. This means that other people are able to enjoy Angelo's happy house and maybe escape from their busy lives for a few days, too.</p>
+                </div>
+            </div>
+
+            <!-- Questions -->
+            <div class="space-y-6">
+                <!-- Q1 -->
+                <div class="bg-white border-l-4 border-indigo-500 shadow p-4 rounded-r-lg">
+                    <p class="font-semibold mb-3">1. Angelo first went to the cave house because it started to rain.</p>
+                    <select data-answer="A" class="w-full sm:w-1/2 border border-gray-300 rounded p-2 act-input">
+                        <option value="">Select Option...</option>
+                        <option value="A">A. Right</option> <option value="B">B. Wrong</option> <option value="C">C. Doesn't say</option>
+                    </select>
+                </div>
+                <!-- Q2 -->
+                <div class="bg-white border-l-4 border-indigo-500 shadow p-4 rounded-r-lg">
+                    <p class="font-semibold mb-3">2. Angelo wanted to change the cave house.</p>
+                    <select data-answer="A" class="w-full sm:w-1/2 border border-gray-300 rounded p-2 act-input">
+                        <option value="">Select Option...</option>
+                        <option value="A">A. Right</option> <option value="B">B. Wrong</option> <option value="C">C. Doesn't say</option>
+                    </select>
+                </div>
+                <!-- Q3 -->
+                <div class="bg-white border-l-4 border-indigo-500 shadow p-4 rounded-r-lg">
+                    <p class="font-semibold mb-3">3. Angelo's parents are Italian.</p>
+                    <select data-answer="C" class="w-full sm:w-1/2 border border-gray-300 rounded p-2 act-input">
+                        <option value="">Select Option...</option>
+                        <option value="A">A. Right</option> <option value="B">B. Wrong</option> <option value="C">C. Doesn't say</option>
+                    </select>
+                </div>
+                <!-- Q4 -->
+                <div class="bg-white border-l-4 border-indigo-500 shadow p-4 rounded-r-lg">
+                    <p class="font-semibold mb-3">4. Angelo asked a friend to help him paint the house.</p>
+                    <select data-answer="B" class="w-full sm:w-1/2 border border-gray-300 rounded p-2 act-input">
+                        <option value="">Select Option...</option>
+                        <option value="A">A. Right</option> <option value="B">B. Wrong</option> <option value="C">C. Doesn't say</option>
+                    </select>
+                </div>
+                <!-- Q5 -->
+                <div class="bg-white border-l-4 border-indigo-500 shadow p-4 rounded-r-lg">
+                    <p class="font-semibold mb-3">5. There's no internet in the cave house.</p>
+                    <select data-answer="B" class="w-full sm:w-1/2 border border-gray-300 rounded p-2 act-input">
+                        <option value="">Select Option...</option>
+                        <option value="A">A. Right</option> <option value="B">B. Wrong</option> <option value="C">C. Doesn't say</option>
+                    </select>
+                </div>
+                <!-- Q6 -->
+                <div class="bg-white border-l-4 border-indigo-500 shadow p-4 rounded-r-lg">
+                    <p class="font-semibold mb-3">6. It's expensive to stay in the cave house.</p>
+                    <select data-answer="C" class="w-full sm:w-1/2 border border-gray-300 rounded p-2 act-input">
+                        <option value="">Select Option...</option>
+                        <option value="A">A. Right</option> <option value="B">B. Wrong</option> <option value="C">C. Doesn't say</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: ACTIVITY 4 ================= -->
+        <section id="section-4" class="activity-section fade-in hidden" data-gradable="true">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">4</span> Activity 4: Grammar - Simple Past</h2>
+            
+            <div class="mb-8 bg-blue-50 p-6 rounded-xl border border-blue-100">
+                <h3 class="font-bold text-lg mb-4 text-blue-900">Find the simple past forms of these verbs in the article and write them below:</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div>1. stay: <input type="text" data-answer="stayed" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>2. decide: <input type="text" data-answer="decided" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>3. finish: <input type="text" data-answer="finished" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>4. want: <input type="text" data-answer="wanted" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>5. realize: <input type="text" data-answer="realized" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>6. work: <input type="text" data-answer="worked" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>7. use: <input type="text" data-answer="used" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                    <div>8. plan: <input type="text" data-answer="planned" class="w-24 border-b-2 border-gray-400 bg-transparent outline-none focus:border-indigo-600 px-1 text-center font-semibold text-indigo-700 act-input"></div>
+                </div>
+            </div>
+
+            <div class="mb-8 bg-green-50 p-6 rounded-xl border border-green-200">
+                <h3 class="font-bold text-lg mb-4 text-green-900">RULE: Use the simple past to talk about finished actions in the past.</h3>
+                <p class="font-medium text-gray-800 mb-2">With regular verbs:</p>
+                <ul class="list-disc pl-6 space-y-3 text-gray-700 leading-relaxed">
+                    <li>We usually add <input type="text" data-answer="ed" class="w-12 border-b-2 border-gray-400 bg-transparent outline-none focus:border-green-600 text-center font-bold text-green-700 act-input"> to the verb (e.g., start - started | stay - stayed).</li>
+                    <li>If the verb ends in -e (e.g. use), we add <input type="text" data-answer="d" class="w-12 border-b-2 border-gray-400 bg-transparent outline-none focus:border-green-600 text-center font-bold text-green-700 act-input">.</li>
+                    <li>If a short verb ends in consonant + vowel + consonant (e.g. plan), we double the <input type="text" data-answer="consonant" class="w-28 border-b-2 border-gray-400 bg-transparent outline-none focus:border-green-600 text-center font-bold text-green-700 act-input"> and add -ed.</li>
+                    <li>We add -ed to verbs ending in vowel+ -y (e.g., stayed).</li>
+                    <li>If the verb ends in consonant+ -y (e.g., try), we change the -y to <input type="text" data-answer="i" class="w-12 border-b-2 border-gray-400 bg-transparent outline-none focus:border-green-600 text-center font-bold text-green-700 act-input"> and add <input type="text" data-answer="ed" class="w-12 border-b-2 border-gray-400 bg-transparent outline-none focus:border-green-600 text-center font-bold text-green-700 act-input">.</li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-4 text-gray-800">Complete the sentences. Use the simple past form of the verbs.</h3>
+                <ol class="list-decimal pl-6 space-y-4 text-gray-800 font-medium">
+                    <li>We <input type="text" data-answer="started" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (start) to paint our house last month and we <input type="text" data-answer="finished" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (finish) yesterday.</li>
+                    <li>She <input type="text" data-answer="decided" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (decide) to change her bedroom, so she <input type="text" data-answer="painted" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (paint) the walls blue.</li>
+                    <li>We <input type="text" data-answer="tried" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (try) to find another house last year because we <input type="text" data-answer="wanted" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (want) to move.</li>
+                    <li>I <input type="text" data-answer="visited" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (visit) my aunt and uncle because they <input type="text" data-answer="wanted" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (want) to show me their new apartment.</li>
+                    <li>My parents <input type="text" data-answer="studied" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (study) lots of ideas for a new kitchen before they <input type="text" data-answer="ordered" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (order) it.</li>
+                    <li>On my last trip, I <input type="text" data-answer="stayed" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (stay) with my grandparents and <input type="text" data-answer="helped" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (help) them clean up the yard.</li>
+                    <li>Last weekend, John <input type="text" data-answer="planned" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (plan) to organize his room, but he <input type="text" data-answer="watched" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (watch) TV instead.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: ACTIVITY 5 ================= -->
+        <section id="section-5" class="activity-section fade-in hidden" data-gradable="true">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">5</span> Activity 5: Life in the Past (Cloze)</h2>
+            <p class="mb-4 text-gray-700">Read the description of how people lived in the past. Type the correct <strong>Simple Past</strong> form of the verbs from the word bank.</p>
+            
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6">
+                <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Word Bank</h4>
+                <div id="word-bank" class="flex flex-wrap" style="gap: 8px;">
+                    <!-- Inserted via JS to shuffle -->
+                </div>
+            </div>
+
+            <div class="bg-amber-50 p-6 rounded-xl border border-amber-100 leading-loose text-lg text-gray-800 font-serif shadow-sm">
+                Life before the 20th century was extremely demanding. Without modern conveniences, people 1. (experience) <input type="text" data-answer="experienced" class="w-28 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> daily challenges that we rarely think about today. Most individuals 2. (reside) <input type="text" data-answer="resided" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> in modest homes and communities where everyone 3. (work) <input type="text" data-answer="worked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> together to survive. During those times, transportation was slow. People often 4. (walk) <input type="text" data-answer="walked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> for miles or 5. (travel) <input type="text" data-answer="traveled" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> by horse-drawn carriages. They 6. (use) <input type="text" data-answer="used" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> simple tools for farming and construction. At home, families 7. (cook) <input type="text" data-answer="cooked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> all their meals over open fires or coal stoves. Without washing machines, women 8. (clean) <input type="text" data-answer="cleaned" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> clothes by hand, a task that 9. (require) <input type="text" data-answer="required" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> hours of intense labor.
+                <br><br>
+                In the evenings, families 10. (gather) <input type="text" data-answer="gathered" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> around the fireplace. They didn't have televisions or the internet, so they 11. (play) <input type="text" data-answer="played" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> board games, 12. (listen) <input type="text" data-answer="listened" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> to stories, or simply 13. (talk) <input type="text" data-answer="talked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> to each other. Sometimes, local musicians 14. (entertain) <input type="text" data-answer="entertained" class="w-28 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> the town with live music, and everyone 15. (enjoy) <input type="text" data-answer="enjoyed" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> the festive atmosphere.
+                <br><br>
+                Medical care was also very basic. Doctors 16. (try) <input type="text" data-answer="tried" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> their best, but they lacked modern medicines. Many people 17. (believe) <input type="text" data-answer="believed" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> in traditional remedies and 18. (hope) <input type="text" data-answer="hoped" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> for natural recoveries. Whenever an illness 19. (happen) <input type="text" data-answer="happened" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input">, the entire community 20. (help) <input type="text" data-answer="helped" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> the affected family.
+            </div>
+        </section>
+
+        <!-- ================= SECTION 6: ACTIVITY 6 ================= -->
+        <section id="section-6" class="activity-section fade-in hidden" data-gradable="false">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">6</span> Activity 6: Learning Reflection</h2>
+            <p class="mb-6 text-gray-700">Please reflect on your learning today by selecting the option that best matches your feeling.</p>
+            
+            <div class="overflow-x-auto shadow-sm rounded-lg border border-gray-200">
+                <table class="min-w-full divide-y divide-gray-200 text-left bg-white">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 font-semibold text-gray-600">Statement</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Strongly Disagree</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Disagree</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Neutral</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Agree</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Strongly Agree</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100" id="likert-table">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 7: RESULTS DASHBOARD ================= -->
+        <section id="section-7" class="activity-section fade-in hidden">
+            <div class="text-center mb-8">
+                <div class="inline-block bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold mb-4">
+                    <i class="fa-solid fa-trophy text-yellow-500 mr-2"></i> Worksheet Complete!
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">Results & Recommendations</h2>
+                <p class="text-gray-500 mt-2">Here is a summary of your performance.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow border border-gray-100 flex flex-col items-center justify-center">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4">Overall Score</h3>
+                    <div class="relative w-48 h-48 flex items-center justify-center">
+                        <canvas id="scoreChart"></canvas>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col">
+                            <span class="text-4xl font-extrabold text-indigo-600" id="final-percentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4">Feedback</h3>
+                    <div id="feedback-message" class="text-gray-700 p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500 leading-relaxed">
+                        <!-- Dynamic Feedback -->
+                    </div>
+                    <ul id="score-breakdown" class="mt-4 space-y-2 text-sm text-gray-600">
+                        <!-- Dynamic Breakdown -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center mt-10">
+                <button id="generate-pdf-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center gap-3 mx-auto w-full sm:w-auto text-lg">
+                    <i class="fa-solid fa-file-pdf text-2xl"></i> Generate & Download PDF
+                </button>
+                <p class="text-sm text-gray-500 mt-3"><i class="fa-solid fa-info-circle"></i> Don't forget to send the PDF to Mr. Rocha via WhatsApp!</p>
+            </div>
+        </section>
+
+        <!-- Navigation Controls -->
+        <div class="border-t border-gray-200 mt-8 pt-6 flex flex-wrap gap-4 justify-between items-center bg-white p-4 rounded-b-2xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" id="nav-controls">
+            <button id="btn-back" class="px-6 py-2 border-2 border-gray-300 text-gray-600 font-semibold rounded-lg hover:bg-gray-50 transition hidden">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back
+            </button>
+            <div class="flex-1 flex justify-center">
+                <button id="btn-check" class="px-8 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold rounded-lg shadow transition hidden transform active:scale-95">
+                    <i class="fa-solid fa-check-double mr-2"></i> Check Answers
+                </button>
+            </div>
+            <button id="btn-next" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow transition">
+                Next <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+            <button id="btn-submit" class="px-8 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow transition hidden">
+                Submit Worksheet <i class="fa-solid fa-paper-plane ml-2"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Hidden Container for PDF Export -->
+    <div id="pdf-export-container" class="bg-white px-10 pb-10 pt-0 font-sans text-black" style="width: 800px;">
+        <div class="text-center border-b-4 border-indigo-600 pb-4 mb-6">
+            <h1 class="text-3xl font-extrabold text-indigo-800 mb-2">Mr. Rocha’s English Class</h1>
+            <p class="text-xl font-bold text-red-600 bg-red-100 py-2 px-4 rounded-lg inline-block border border-red-300 shadow-sm">
+                <i class="fa-brands fa-whatsapp"></i> Send PDF results by WhatsApp to Mr. Rocha to get credit: <strong>33-3497-1997</strong>
+            </p>
+        </div>
+        
+        <div class="flex justify-between items-center mb-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <div>
+                <p class="text-lg"><strong>Student Name:</strong> <span id="pdf-name" class="text-indigo-700"></span></p>
+                <p class="text-lg"><strong>Date:</strong> <span id="pdf-date" class="text-indigo-700"></span></p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500">Final Score</p>
+                <p class="text-4xl font-extrabold text-indigo-600" id="pdf-score">0%</p>
+            </div>
+        </div>
+
+        <div class="mb-10 w-[400px] mx-auto">
+            <h3 class="text-center font-bold mb-2">Performance Chart</h3>
+            <canvas id="pdfChart"></canvas>
+        </div>
+
+        <div id="pdf-activities-log" class="space-y-6">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // State
+            const state = {
+                currentStep: 0,
+                totalSteps: 7, // 0 to 7
+                scores: {},
+                checked: {},
+                maxScores: { 1: 6, 2: 6, 3: 6, 4: 27, 5: 20 },
+                likertQuestions: [
+                    "I understood the reading about the caveman.",
+                    "I can use the simple past with regular verbs.",
+                    "I learned new vocabulary about the house.",
+                    "I found the matching exercises easy.",
+                    "I enjoyed this worksheet."
+                ]
+            };
+
+            // Word bank for Activity 5
+            const wordBankPairs = [
+                {p: 'experience', pt: 'experienced'}, {p: 'reside', pt: 'resided'}, {p: 'work', pt: 'worked'},
+                {p: 'walk', pt: 'walked'}, {p: 'travel', pt: 'traveled'}, {p: 'use', pt: 'used'},
+                {p: 'cook', pt: 'cooked'}, {p: 'clean', pt: 'cleaned'}, {p: 'require', pt: 'required'},
+                {p: 'gather', pt: 'gathered'}, {p: 'play', pt: 'played'}, {p: 'listen', pt: 'listened'},
+                {p: 'talk', pt: 'talked'}, {p: 'entertain', pt: 'entertained'}, {p: 'enjoy', pt: 'enjoyed'},
+                {p: 'try', pt: 'tried'}, {p: 'believe', pt: 'believed'}, {p: 'hope', pt: 'hoped'},
+                {p: 'happen', pt: 'happened'}, {p: 'help', pt: 'helped'}
+            ];
+
+            // Setup Activity 5 Word Bank
+            const wordBankContainer = document.getElementById('word-bank');
+            // Shuffle all forms
+            let allWords = [];
+            wordBankPairs.forEach(pair => { allWords.push(pair.pt); });
+            allWords.sort(() => Math.random() - 0.5);
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.className = 'word-tag';
+                span.textContent = word;
+                wordBankContainer.appendChild(span);
+            });
+
+            // Setup Activity 6 Likert
+            const likertTable = document.getElementById('likert-table');
+            state.likertQuestions.forEach((q, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = idx % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-800 font-medium">${q}</td>
+                    ${[1,2,3,4,5].map(val => `
+                        <td class="px-4 py-4 text-center">
+                            <input type="radio" name="likert-${idx}" value="${val}" class="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 act-input">
+                        </td>
+                    `).join('')}
+                `;
+                likertTable.appendChild(tr);
+            });
+
+            // Navigation Elements
+            const sections = document.querySelectorAll('.activity-section');
+            const btnNext = document.getElementById('btn-next');
+            const btnBack = document.getElementById('btn-back');
+            const btnCheck = document.getElementById('btn-check');
+            const btnSubmit = document.getElementById('btn-submit');
+            const progressBar = document.getElementById('progress-bar');
+            const stepNum = document.getElementById('current-step-num');
+
+            function updateUI() {
+                // Show/hide sections
+                sections.forEach((sec, idx) => {
+                    if (idx === state.currentStep) {
+                        sec.classList.remove('hidden');
+                        sec.classList.add('block');
+                    } else {
+                        sec.classList.add('hidden');
+                        sec.classList.remove('block');
+                    }
+                });
+
+                // Update Progress Bar & Indicator
+                let progress = (state.currentStep / state.totalSteps) * 100;
+                progressBar.style.width = `${progress}%`;
+                
+                if(state.currentStep === 0) {
+                    stepNum.innerText = "Intro";
+                } else if(state.currentStep === state.totalSteps) {
+                    stepNum.innerText = "Results";
+                } else {
+                    stepNum.innerText = state.currentStep;
+                }
+
+                // Buttons Logic
+                btnBack.style.display = state.currentStep > 0 ? 'block' : 'none';
+                
+                if (state.currentStep === state.totalSteps) {
+                    // Results page
+                    document.getElementById('nav-controls').style.display = 'none';
+                } else if (state.currentStep === state.totalSteps - 1) {
+                    // Last activity
+                    btnNext.style.display = 'none';
+                    btnSubmit.style.display = 'block';
+                } else {
+                    btnNext.style.display = 'block';
+                    btnSubmit.style.display = 'none';
+                }
+
+                // Check button visibility
+                const currentSec = sections[state.currentStep];
+                const isGradable = currentSec.getAttribute('data-gradable') === 'true';
+                if (isGradable && !state.checked[state.currentStep]) {
+                    btnCheck.style.display = 'block';
+                } else {
+                    btnCheck.style.display = 'none';
+                }
+            }
+
+            // Button Event Listeners
+            btnNext.addEventListener('click', () => {
+                if (state.currentStep < state.totalSteps) {
+                    state.currentStep++;
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            btnBack.addEventListener('click', () => {
+                if (state.currentStep > 0) {
+                    state.currentStep--;
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            btnCheck.addEventListener('click', () => {
+                checkCurrentSection();
+            });
+
+            btnSubmit.addEventListener('click', () => {
+                // Ensure name and date are somewhat filled (basic validation)
+                const nameInput = document.getElementById('student-name').value;
+                if(!nameInput) {
+                    alert("Please enter your name in the Introduction section before submitting.");
+                    state.currentStep = 0;
+                    updateUI();
+                    return;
+                }
+
+                // Auto-check any unchecked gradable sections
+                for(let i = 1; i <= 5; i++) {
+                    if(!state.checked[i]) {
+                        state.currentStep = i; // Temporarily switch context
+                        checkCurrentSection(true); // silent check
+                    }
+                }
+                
+                state.currentStep = state.totalSteps; // Go to results
+                generateResults();
+                updateUI();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            function checkCurrentSection(silent = false) {
+                const sec = sections[state.currentStep];
+                if (!sec || sec.getAttribute('data-gradable') !== 'true') return;
+
+                const inputs = sec.querySelectorAll('.act-input');
+                let score = 0;
+                let total = inputs.length;
+
+                inputs.forEach(input => {
+                    const expected = input.getAttribute('data-answer');
+                    if (!expected) return;
+
+                    let userAnswer = input.value.trim().toLowerCase();
+                    let correctAnswer = expected.trim().toLowerCase();
+                    
+                    let isCorrect = false;
+                    if(userAnswer === correctAnswer) {
+                        isCorrect = true;
+                    } else if (correctAnswer === 'consonant' && (userAnswer === 'last consonant' || userAnswer === 'last letter')) {
+                        isCorrect = true; // Special allowance for Act 4 Rule
+                    }
+
+                    if (isCorrect) {
+                        input.classList.add('input-correct');
+                        score++;
+                        // Add checkmark icon sibling if possible
+                        if(input.tagName === 'INPUT' && input.type==='text' && !silent) {
+                            input.insertAdjacentHTML('afterend', '<i class="fa-solid fa-check text-green-500 ml-1 absolute mt-1"></i>');
+                        }
+                    } else {
+                        input.classList.add('input-incorrect');
+                        // Show correct answer if wrong
+                        if(!silent && userAnswer !== "") {
+                           input.value = `${input.value} (X -> ${expected})`; 
+                        } else if (!silent && userAnswer === "") {
+                           input.value = `(Missing -> ${expected})`;
+                        }
+                    }
+                    
+                    input.disabled = true; // Lock it
+                });
+
+                state.scores[state.currentStep] = score;
+                state.checked[state.currentStep] = true;
+                
+                if(!silent) updateUI(); // Hide check button
+            }
+
+            let chartInstance = null;
+            let pdfChartInstance = null;
+
+            function generateResults() {
+                let totalScore = 0;
+                let totalPossible = 0;
+                let breakdownHTML = '';
+
+                for(let i = 1; i <= 5; i++) {
+                    const s = state.scores[i] || 0;
+                    const max = state.maxScores[i];
+                    totalScore += s;
+                    totalPossible += max;
+                    breakdownHTML += `<li class="flex justify-between border-b border-gray-100 pb-1"><span>Activity ${i}:</span> <span class="font-bold ${s===max?'text-green-600':'text-gray-800'}">${s} / ${max}</span></li>`;
+                }
+
+                document.getElementById('score-breakdown').innerHTML = breakdownHTML;
+
+                const percentage = Math.round((totalScore / totalPossible) * 100);
+                document.getElementById('final-percentage').innerText = percentage + '%';
+                
+                const feedbackDiv = document.getElementById('feedback-message');
+                if (percentage >= 90) {
+                    feedbackDiv.innerHTML = "<strong>Excellent job!</strong> You have a fantastic understanding of the material. Keep up the great work!";
+                    feedbackDiv.className = "text-gray-700 p-4 bg-green-50 rounded-lg border-l-4 border-green-500 leading-relaxed";
+                } else if (percentage >= 70) {
+                    feedbackDiv.innerHTML = "<strong>Good effort!</strong> You understand most of the concepts, but there is still some room for improvement. Review the mistakes to perfect your skills.";
+                    feedbackDiv.className = "text-gray-700 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500 leading-relaxed";
+                } else {
+                    feedbackDiv.innerHTML = "<strong>Keep practicing!</strong> It looks like you struggled with some sections, especially the Simple Past verbs. We highly recommend reviewing the rules and attempting similar exercises.";
+                    feedbackDiv.className = "text-gray-700 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500 leading-relaxed";
+                }
+
+                // Render Chart
+                const ctx = document.getElementById('scoreChart').getContext('2d');
+                if(chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Correct', 'Incorrect'],
+                        datasets: [{
+                            data: [totalScore, totalPossible - totalScore],
+                            backgroundColor: ['#4f46e5', '#e5e7eb'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: {duration: 1000} }
+                });
+
+                // Prepare PDF Data Background
+                document.getElementById('pdf-name').innerText = document.getElementById('student-name').value || 'Anonymous Student';
+                document.getElementById('pdf-date').innerText = document.getElementById('student-date').value || new Date().toLocaleDateString();
+                document.getElementById('pdf-score').innerText = percentage + '%';
+
+                // Render PDF Chart (No animation for immediate capture)
+                const ctxPdf = document.getElementById('pdfChart').getContext('2d');
+                if(pdfChartInstance) pdfChartInstance.destroy();
+                pdfChartInstance = new Chart(ctxPdf, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Correct Answers', 'Incorrect Answers'],
+                        datasets: [{
+                            data: [totalScore, totalPossible - totalScore],
+                            backgroundColor: ['#22c55e', '#ef4444'],
+                        }]
+                    },
+                    options: { animation: false, plugins: { legend: { position: 'bottom' } } }
+                });
+
+                // Build Activity Log for PDF
+                const logContainer = document.getElementById('pdf-activities-log');
+                logContainer.innerHTML = '';
+                
+                sections.forEach((sec, idx) => {
+                    if(idx === 0 || idx === 7) return; // Skip intro and results
+                    
+                    const actTitle = sec.querySelector('h2').innerText;
+                    const secScore = state.scores[idx] !== undefined ? `${state.scores[idx]} / ${state.maxScores[idx]}` : 'N/A';
+                    
+                    let html = `
+                        <div class="border border-gray-300 rounded-lg p-4 bg-white mb-4" style="page-break-inside: avoid;">
+                            <div class="flex justify-between border-b-2 border-gray-100 pb-2 mb-3">
+                                <h4 class="font-bold text-lg text-indigo-800">${actTitle}</h4>
+                                <span class="font-bold text-gray-600 bg-gray-100 px-3 py-1 rounded">Score: ${secScore}</span>
+                            </div>
+                            <ul class="text-sm space-y-1">
+                    `;
+
+                    if(idx === 6) { // Likert
+                        const radios = sec.querySelectorAll('input[type="radio"]:checked');
+                        radios.forEach((r, i) => {
+                            html += `<li><span class="text-gray-500">Q${i+1}:</span> Answered: <strong>${r.value} / 5</strong></li>`;
+                        });
+                    } else {
+                        const inputs = sec.querySelectorAll('.act-input');
+                        inputs.forEach((input, i) => {
+                            const expected = input.getAttribute('data-answer');
+                            let val = input.value;
+                            if(input.tagName === 'SELECT') {
+                                val = input.options[input.selectedIndex]?.text || "Not answered";
+                            }
+                            const isCorr = input.classList.contains('input-correct');
+                            const icon = isCorr ? '<span style="color:green;">✔</span>' : '<span style="color:red;">✘</span>';
+                            html += `<li>Item ${i+1}: User entered <strong>"${val}"</strong> ${icon} <span class="text-gray-400 ml-2">(Expected: ${expected})</span></li>`;
+                        });
+                    }
+
+                    html += `</ul></div>`;
+                    logContainer.innerHTML += html;
+                });
+            }
+
+            // PDF Generation
+            document.getElementById('generate-pdf-btn').addEventListener('click', function() {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-2xl"></i> Generating Document...';
+                btn.disabled = true;
+
+                const element = document.getElementById('pdf-export-container');
+                element.style.display = 'block'; // Unhide for capture
+
+                const studentName = document.getElementById('student-name').value.trim().replace(/\s+/g, '_') || 'Student';
+
+                const opt = {
+                    margin:       [0, 10, 10, 10], // top, left, bottom, right in mm
+                    filename:     `Mr_Rocha_English_${studentName}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, logging: false },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // Add slight delay to ensure chart renders in display:block mode
+                setTimeout(() => {
+                    html2pdf().set(opt).from(element).save().then(() => {
+                        element.style.display = 'none'; // Hide again
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }).catch(err => {
+                        console.error("PDF generation error:", err);
+                        alert("There was an error generating the PDF.");
+                        element.style.display = 'none';
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    });
+                }, 500);
+            });
+
+            // Initialize Setup
+            updateUI();
+        });
+    </script>
+</body>
+</html>
