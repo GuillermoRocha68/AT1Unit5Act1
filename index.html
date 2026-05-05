@@ -185,6 +185,12 @@
                     </select>
                 </div>
             </div>
+            
+            <div class="mt-8 flex justify-end no-print">
+                <button class="check-ans-btn bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow transition flex items-center gap-2" onclick="checkSectionAnswers(1)">
+                    <i class="fa-solid fa-check-circle"></i> Check Answers
+                </button>
+            </div>
         </section>
 
         <!-- ================= SECTION 2: ACTIVITY 2 ================= -->
@@ -257,6 +263,12 @@
                         <option value="dining room">dining room</option> <option value="yard">yard</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="mt-8 flex justify-end no-print">
+                <button class="check-ans-btn bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow transition flex items-center gap-2" onclick="checkSectionAnswers(2)">
+                    <i class="fa-solid fa-check-circle"></i> Check Answers
+                </button>
             </div>
         </section>
 
@@ -336,6 +348,12 @@
                     </select>
                 </div>
             </div>
+
+            <div class="mt-8 flex justify-end no-print">
+                <button class="check-ans-btn bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow transition flex items-center gap-2" onclick="checkSectionAnswers(3)">
+                    <i class="fa-solid fa-check-circle"></i> Check Answers
+                </button>
+            </div>
         </section>
 
         <!-- ================= SECTION 4: ACTIVITY 4 ================= -->
@@ -380,6 +398,12 @@
                     <li>Last weekend, John <input type="text" data-answer="planned" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (plan) to organize his room, but he <input type="text" data-answer="watched" class="w-24 border-b-2 border-gray-400 outline-none focus:border-indigo-600 text-center text-indigo-700 act-input"> (watch) TV instead.</li>
                 </ol>
             </div>
+
+            <div class="mt-8 flex justify-end no-print">
+                <button class="check-ans-btn bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow transition flex items-center gap-2" onclick="checkSectionAnswers(4)">
+                    <i class="fa-solid fa-check-circle"></i> Check Answers
+                </button>
+            </div>
         </section>
 
         <!-- ================= SECTION 5: ACTIVITY 5 ================= -->
@@ -394,6 +418,12 @@
                 <p class="indent-8 mb-4">
                     In the evenings, they <input type="text" data-answer="didn't watch" class="w-32 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(not watch)"> television or use smartphones. Instead, they <input type="text" data-answer="listened" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(listen)"> to the radio, <input type="text" data-answer="played" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(play)"> board games, or <input type="text" data-answer="talked" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(talk)"> with each other by the fireplace. Children <input type="text" data-answer="walked" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(walk)"> long distances to school, and they often <input type="text" data-answer="helped" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(help)"> their parents with chores around the house or in the yard.
                 </p>
+            </div>
+
+            <div class="mt-8 flex justify-end no-print">
+                <button class="check-ans-btn bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow transition flex items-center gap-2" onclick="checkSectionAnswers(5)">
+                    <i class="fa-solid fa-check-circle"></i> Check Answers
+                </button>
             </div>
         </section>
 
@@ -516,6 +546,44 @@
             }
         }
 
+        function checkSectionAnswers(secNum) {
+            const section = document.getElementById(`section-${secNum}`);
+            const inputs = section.querySelectorAll('.act-input');
+            const btn = section.querySelector('.check-ans-btn');
+            
+            inputs.forEach(input => {
+                const studentAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = input.getAttribute('data-answer').toLowerCase();
+
+                // Remove previous styling just in case
+                input.classList.remove('input-correct', 'input-incorrect');
+                
+                if (studentAnswer === correctAnswer) {
+                    input.classList.add('input-correct');
+                } else {
+                    input.classList.add('input-incorrect');
+                    
+                    // Show correct answer snippet if it doesn't already exist
+                    if (!input.nextElementSibling || !input.nextElementSibling.classList.contains('correction-msg')) {
+                        const span = document.createElement('span');
+                        span.className = 'correction-msg text-sm font-bold text-green-600 ml-2 fade-in';
+                        span.innerText = `(${input.getAttribute('data-answer')})`; // Original casing
+                        
+                        // Insert safely after the input element
+                        input.parentNode.insertBefore(span, input.nextSibling);
+                    }
+                }
+                
+                // Disable input to lock the answer
+                input.disabled = true;
+            });
+
+            // Hide the button after checking
+            if (btn) {
+                btn.classList.add('hidden');
+            }
+        }
+
         function navigate(direction) {
             // Validation before moving next from step 0
             if (direction === 1 && currentStep === 0) {
@@ -559,6 +627,9 @@
                 const section = document.getElementById(`section-${secIndex}`);
                 const inputs = section.querySelectorAll('.act-input');
                 
+                // Trigger the visual grading check for any section the user didn't manually check
+                checkSectionAnswers(secIndex);
+                
                 inputs.forEach(input => {
                     sectionMaxes[arrayIndex]++;
                     totalInputs++;
@@ -566,25 +637,11 @@
                     const studentAnswer = input.value.trim().toLowerCase();
                     const correctAnswer = input.getAttribute('data-answer').toLowerCase();
 
-                    // Remove previous styling
-                    input.classList.remove('input-correct', 'input-incorrect');
-                    
-                    // Simple text matching (could be enhanced with regex for typos)
+                    // Increment score if correct
                     if (studentAnswer === correctAnswer) {
                         sectionScores[arrayIndex]++;
                         totalCorrect++;
-                        input.classList.add('input-correct');
-                    } else {
-                        input.classList.add('input-incorrect');
-                        // Show correct answer as placeholder if it was wrong
-                        if(input.tagName === 'INPUT' && input.type === 'text') {
-                            input.value = studentAnswer; // Keep their answer
-                            // Optionally create a span showing correct answer, omitted here to keep UI clean
-                        }
                     }
-                    
-                    // Lock inputs after grading
-                    input.disabled = true;
                 });
                 
                 // Update Score text
