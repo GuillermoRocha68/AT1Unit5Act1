@@ -66,19 +66,26 @@
         #pdf-export-container {
             display: none;
         }
+        
+        /* Print specifics */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .activity-section { display: block !important; opacity: 1 !important; page-break-inside: avoid; margin-bottom: 2rem;}
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 min-h-screen pb-20">
 
     <!-- Header & Progress Bar -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white shadow-md sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <h1 class="text-2xl font-bold text-indigo-700 flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap"></i> Mr. Rocha’s English Class
                 </h1>
                 <div class="mt-2 md:mt-0 text-sm font-medium text-gray-500" id="step-indicator">
-                    Activity <span id="current-step-num">0</span> of 6
+                    Activity <span id="current-step-num">0</span> of 5
                 </div>
             </div>
             <!-- Progress Bar -->
@@ -89,7 +96,7 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="max-w-4xl mx-auto px-4 py-8 mt-4 bg-white rounded-2xl shadow-xl min-h-[60vh] relative">
+    <main id="main-content" class="max-w-4xl mx-auto px-4 py-8 mt-4 bg-white rounded-2xl shadow-xl min-h-[60vh] relative">
         
         <!-- ================= SECTION 0: INTRODUCTION ================= -->
         <section id="section-0" class="activity-section fade-in block">
@@ -119,35 +126,18 @@
         </section>
 
         <!-- ================= SECTION 1: ACTIVITY 1 ================= -->
-        <section id="section-1" class="activity-section fade-in hidden" data-gradable="true">
+        <section id="section-1" class="activity-section fade-in hidden" data-section="1">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span> Activity 1: Rooms of the House</h2>
-            <p class="mb-6 text-gray-700">Match the words (1-6) with the photos (A-F). Then listen and check.</p>
+            <p class="mb-6 text-gray-700">Match the words (1-6) with the photos (A-F).</p>
             
-            <!-- Image Placeholder -->
-            <div class="mb-8 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2">
+            <!-- Image Load -->
+            <div class="mb-8 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2 min-h-[200px]">
                 <img src="image1.jpg" alt="Activity 1 Photos A-F" class="max-w-full h-auto rounded shadow-sm" onerror="this.outerHTML='<div class=\'py-12 text-center text-gray-400\'><i class=\'fa-regular fa-image text-4xl mb-2\'></i><p>image1.jpg not found in folder</p></div>'">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="act1-inputs">
-                <!-- Data answer based on standard setup -->
                 <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
                     <label class="font-medium mb-1">1. kitchen</label>
-                    <select data-answer="A" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
-                        <option value="">Select Photo...</option>
-                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
-                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
-                    </select>
-                </div>
-                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <label class="font-medium mb-1">2. bedroom</label>
-                    <select data-answer="B" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
-                        <option value="">Select Photo...</option>
-                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
-                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
-                    </select>
-                </div>
-                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <label class="font-medium mb-1">3. bathroom</label>
                     <select data-answer="C" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
                         <option value="">Select Photo...</option>
                         <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
@@ -155,15 +145,7 @@
                     </select>
                 </div>
                 <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <label class="font-medium mb-1">4. living room</label>
-                    <select data-answer="D" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
-                        <option value="">Select Photo...</option>
-                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
-                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
-                    </select>
-                </div>
-                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <label class="font-medium mb-1">5. dining room</label>
+                    <label class="font-medium mb-1">2. bedroom</label>
                     <select data-answer="E" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
                         <option value="">Select Photo...</option>
                         <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
@@ -171,8 +153,32 @@
                     </select>
                 </div>
                 <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <label class="font-medium mb-1">6. yard</label>
+                    <label class="font-medium mb-1">3. bathroom</label>
+                    <select data-answer="D" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">4. living room</label>
+                    <select data-answer="A" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">5. dining room</label>
                     <select data-answer="F" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
+                        <option value="">Select Photo...</option>
+                        <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
+                        <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
+                    </select>
+                </div>
+                <div class="flex flex-col bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <label class="font-medium mb-1">6. yard</label>
+                    <select data-answer="B" class="form-select border border-gray-300 rounded p-2 outline-none focus:border-indigo-500 act-input">
                         <option value="">Select Photo...</option>
                         <option value="A">Photo A</option> <option value="B">Photo B</option> <option value="C">Photo C</option>
                         <option value="D">Photo D</option> <option value="E">Photo E</option> <option value="F">Photo F</option>
@@ -182,7 +188,7 @@
         </section>
 
         <!-- ================= SECTION 2: ACTIVITY 2 ================= -->
-        <section id="section-2" class="activity-section fade-in hidden" data-gradable="true">
+        <section id="section-2" class="activity-section fade-in hidden" data-section="2">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span> Activity 2: Verbs and Rooms</h2>
             <p class="mb-4 text-gray-700">Match the verbs in the list with the rooms in Exercise 1. (Some verbs go with more than one room, choose the most common one).</p>
             
@@ -255,10 +261,10 @@
         </section>
 
         <!-- ================= SECTION 3: ACTIVITY 3 ================= -->
-        <section id="section-3" class="activity-section fade-in hidden" data-gradable="true">
+        <section id="section-3" class="activity-section fade-in hidden" data-section="3">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span> Activity 3: Reading Comprehension</h2>
             <p class="mb-4 text-gray-700">Read and listen to the magazine article. Choose the correct option A, B, or C.</p>
-            
+
             <div class="mb-6 bg-gray-50 rounded-xl p-4 border border-gray-200">
                 <p class="font-medium mb-2 flex items-center gap-2"><i class="fa-solid fa-volume-high text-indigo-500"></i> Listen along:</p>
                 <audio id="audio1" controls class="w-full">
@@ -270,7 +276,7 @@
             <!-- Reading Text -->
             <div class="bg-amber-50 p-6 rounded-xl border border-amber-100 mb-8 shadow-sm">
                 <h3 class="text-xl font-bold text-amber-900 mb-4">The 21st Century Caveman</h3>
-                <div class="text-gray-800 leading-relaxed space-y-4 font-serif">
+                <div class="text-gray-800 leading-relaxed space-y-4 font-serif text-sm sm:text-base">
                     <p>In 2007, Angelo Mastropietro was in the woods in Worcestershire, UK when it started to rain. He looked for a place to keep dry and he discovered a cave house! The cave house was 800 years old. People lived in the rock-house for hundreds of years, but from about 1962, no one lived there and the house stayed empty.</p>
                     <p>Angelo liked the rock-house very much. He looked into the possibility of buying it. It was for sale and in 2010, he decided to get it. After that, he started to cut into the rock and to rebuild and modernize the house.</p>
                     <p>Angelo (who is English, even though his name is Italian) finished the house in nine months. He was a businessman before he started the house, and before 2007, he was quite sick, so he wanted a place where it was possible for him to live in a happy and healthy way. He realized that he didn't need to live in a huge apartment and that being closer to nature could help him feel better.</p>
@@ -333,7 +339,7 @@
         </section>
 
         <!-- ================= SECTION 4: ACTIVITY 4 ================= -->
-        <section id="section-4" class="activity-section fade-in hidden" data-gradable="true">
+        <section id="section-4" class="activity-section fade-in hidden" data-section="4">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">4</span> Activity 4: Grammar - Simple Past</h2>
             
             <div class="mb-8 bg-blue-50 p-6 rounded-xl border border-blue-100">
@@ -377,499 +383,304 @@
         </section>
 
         <!-- ================= SECTION 5: ACTIVITY 5 ================= -->
-        <section id="section-5" class="activity-section fade-in hidden" data-gradable="true">
+        <section id="section-5" class="activity-section fade-in hidden" data-section="5">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">5</span> Activity 5: Life in the Past (Cloze)</h2>
-            <p class="mb-4 text-gray-700">Read the description of how people lived in the past. Type the correct <strong>Simple Past</strong> form of the verbs from the word bank.</p>
+            <p class="mb-6 text-gray-700">Read the description of how people lived in the past. Type the correct <strong>Simple Past</strong> form of the verbs in parentheses.</p>
             
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Word Bank</h4>
-                <div id="word-bank" class="flex flex-wrap" style="gap: 8px;">
-                    <!-- Inserted via JS to shuffle -->
-                </div>
-            </div>
-
-            <div class="bg-amber-50 p-6 rounded-xl border border-amber-100 leading-loose text-lg text-gray-800 font-serif shadow-sm">
-                Life before the 20th century was extremely demanding. Without modern conveniences, people 1. (experience) <input type="text" data-answer="experienced" class="w-28 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> daily challenges that we rarely think about today. Most individuals 2. (reside) <input type="text" data-answer="resided" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> in modest homes and communities where everyone 3. (work) <input type="text" data-answer="worked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> together to survive. During those times, transportation was slow. People often 4. (walk) <input type="text" data-answer="walked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> for miles or 5. (travel) <input type="text" data-answer="traveled" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> by horse-drawn carriages. They 6. (use) <input type="text" data-answer="used" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> simple tools for farming and construction. At home, families 7. (cook) <input type="text" data-answer="cooked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> all their meals over open fires or coal stoves. Without washing machines, women 8. (clean) <input type="text" data-answer="cleaned" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> clothes by hand, a task that 9. (require) <input type="text" data-answer="required" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> hours of intense labor.
-                <br><br>
-                In the evenings, families 10. (gather) <input type="text" data-answer="gathered" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> around the fireplace. They didn't have televisions or the internet, so they 11. (play) <input type="text" data-answer="played" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> board games, 12. (listen) <input type="text" data-answer="listened" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> to stories, or simply 13. (talk) <input type="text" data-answer="talked" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> to each other. Sometimes, local musicians 14. (entertain) <input type="text" data-answer="entertained" class="w-28 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> the town with live music, and everyone 15. (enjoy) <input type="text" data-answer="enjoyed" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> the festive atmosphere.
-                <br><br>
-                Medical care was also very basic. Doctors 16. (try) <input type="text" data-answer="tried" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> their best, but they lacked modern medicines. Many people 17. (believe) <input type="text" data-answer="believed" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> in traditional remedies and 18. (hope) <input type="text" data-answer="hoped" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> for natural recoveries. Whenever an illness 19. (happen) <input type="text" data-answer="happened" class="w-24 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input">, the entire community 20. (help) <input type="text" data-answer="helped" class="w-20 border-b-2 border-amber-400 bg-transparent text-center font-bold text-amber-900 outline-none act-input"> the affected family.
+            <div class="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-md leading-relaxed text-lg text-gray-800">
+                <p class="indent-8 mb-4">
+                    A hundred years ago, life in many towns <input type="text" data-answer="was" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(be)"> very different. People <input type="text" data-answer="lived" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(live)"> in smaller houses and they <input type="text" data-answer="didn't have" class="w-32 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(not have)"> many of the modern conveniences we enjoy today. Families usually <input type="text" data-answer="cooked" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(cook)"> their meals from scratch using fresh ingredients from the market.
+                </p>
+                <p class="indent-8 mb-4">
+                    In the evenings, they <input type="text" data-answer="didn't watch" class="w-32 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(not watch)"> television or use smartphones. Instead, they <input type="text" data-answer="listened" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(listen)"> to the radio, <input type="text" data-answer="played" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(play)"> board games, or <input type="text" data-answer="talked" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(talk)"> with each other by the fireplace. Children <input type="text" data-answer="walked" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(walk)"> long distances to school, and they often <input type="text" data-answer="helped" class="w-24 mx-1 border-b-2 border-indigo-300 bg-indigo-50 outline-none focus:border-indigo-600 text-center font-semibold text-indigo-800 act-input" placeholder="(help)"> their parents with chores around the house or in the yard.
+                </p>
             </div>
         </section>
 
-        <!-- ================= SECTION 6: ACTIVITY 6 ================= -->
-        <section id="section-6" class="activity-section fade-in hidden" data-gradable="false">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">6</span> Activity 6: Learning Reflection</h2>
-            <p class="mb-6 text-gray-700">Please reflect on your learning today by selecting the option that best matches your feeling.</p>
-            
-            <div class="overflow-x-auto shadow-sm rounded-lg border border-gray-200">
-                <table class="min-w-full divide-y divide-gray-200 text-left bg-white">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 font-semibold text-gray-600">Statement</th>
-                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Strongly Disagree</th>
-                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Disagree</th>
-                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Neutral</th>
-                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Agree</th>
-                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Strongly Agree</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100" id="likert-table">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- ================= SECTION 7: RESULTS DASHBOARD ================= -->
-        <section id="section-7" class="activity-section fade-in hidden">
+        <!-- ================= SECTION 6: RESULTS & SUMMARY ================= -->
+        <section id="section-6" class="activity-section fade-in hidden">
             <div class="text-center mb-8">
-                <div class="inline-block bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold mb-4">
-                    <i class="fa-solid fa-trophy text-yellow-500 mr-2"></i> Worksheet Complete!
-                </div>
-                <h2 class="text-3xl font-bold text-gray-800">Results & Recommendations</h2>
-                <p class="text-gray-500 mt-2">Here is a summary of your performance.</p>
+                <i class="fa-solid fa-trophy text-6xl text-yellow-400 mb-4 drop-shadow-md"></i>
+                <h2 class="text-3xl font-bold text-gray-800">Activity Completed!</h2>
+                <p class="text-gray-600 mt-2">Here is your performance summary, <span id="summary-name" class="font-bold text-indigo-600">Student</span>.</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded-2xl shadow border border-gray-100 flex flex-col items-center justify-center">
-                    <h3 class="text-lg font-bold text-gray-700 mb-4">Overall Score</h3>
-                    <div class="relative w-48 h-48 flex items-center justify-center">
-                        <canvas id="scoreChart"></canvas>
-                        <div class="absolute inset-0 flex items-center justify-center flex-col">
-                            <span class="text-4xl font-extrabold text-indigo-600" id="final-percentage">0%</span>
+
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                
+                <!-- Score Breakdown -->
+                <div class="space-y-4">
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 flex justify-between items-center">
+                        <span class="font-semibold text-indigo-900">Overall Grade:</span>
+                        <span id="final-score" class="text-2xl font-bold text-indigo-600">0%</span>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm font-medium text-gray-600">
+                        <div class="flex justify-between border-b border-gray-100 pb-1">
+                            <span>Act 1: Rooms</span> <span id="score-1">0/6</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-1">
+                            <span>Act 2: Verbs</span> <span id="score-2">0/6</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-1">
+                            <span>Act 3: Reading</span> <span id="score-3">0/6</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-1">
+                            <span>Act 4: Grammar</span> <span id="score-4">0/27</span>
+                        </div>
+                        <div class="flex justify-between pb-1">
+                            <span>Act 5: Cloze</span> <span id="score-5">0/10</span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-700 mb-4">Feedback</h3>
-                    <div id="feedback-message" class="text-gray-700 p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500 leading-relaxed">
-                        <!-- Dynamic Feedback -->
-                    </div>
-                    <ul id="score-breakdown" class="mt-4 space-y-2 text-sm text-gray-600">
-                        <!-- Dynamic Breakdown -->
-                    </ul>
+
+                <!-- Chart Container -->
+                <div class="relative w-full h-64 flex justify-center">
+                    <canvas id="resultsChart"></canvas>
                 </div>
             </div>
 
-            <div class="text-center mt-10">
-                <button id="generate-pdf-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center gap-3 mx-auto w-full sm:w-auto text-lg">
-                    <i class="fa-solid fa-file-pdf text-2xl"></i> Generate & Download PDF
+            <div class="mt-8 text-center no-print">
+                <button onclick="downloadPDF()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2 mx-auto">
+                    <i class="fa-solid fa-file-pdf"></i> Download PDF Report
                 </button>
-                <p class="text-sm text-gray-500 mt-3"><i class="fa-solid fa-info-circle"></i> Don't forget to send the PDF to Mr. Rocha via WhatsApp!</p>
             </div>
         </section>
 
-        <!-- Navigation Controls -->
-        <div class="border-t border-gray-200 mt-8 pt-6 flex flex-wrap gap-4 justify-between items-center bg-white p-4 rounded-b-2xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" id="nav-controls">
-            <button id="btn-back" class="px-6 py-2 border-2 border-gray-300 text-gray-600 font-semibold rounded-lg hover:bg-gray-50 transition hidden">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Back
+        <!-- Navigation Buttons -->
+        <div class="mt-10 flex justify-between border-t border-gray-200 pt-6 no-print">
+            <button id="btn-prev" class="hidden px-6 py-2 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition flex items-center gap-2" onclick="navigate(-1)">
+                <i class="fa-solid fa-arrow-left"></i> Previous
             </button>
-            <div class="flex-1 flex justify-center">
-                <button id="btn-check" class="px-8 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold rounded-lg shadow transition hidden transform active:scale-95">
-                    <i class="fa-solid fa-check-double mr-2"></i> Check Answers
-                </button>
-            </div>
-            <button id="btn-next" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow transition">
-                Next <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
-            <button id="btn-submit" class="px-8 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow transition hidden">
-                Submit Worksheet <i class="fa-solid fa-paper-plane ml-2"></i>
+            <div class="flex-1"></div> <!-- Spacer -->
+            <button id="btn-next" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 shadow-md transition flex items-center gap-2" onclick="navigate(1)">
+                Next <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
+
     </main>
-
-    <!-- Hidden Container for PDF Export -->
-    <div id="pdf-export-container" class="bg-white px-10 pb-10 pt-0 font-sans text-black" style="width: 800px;">
-        <div class="text-center border-b-4 border-indigo-600 pb-4 mb-6">
-            <h1 class="text-3xl font-extrabold text-indigo-800 mb-2">Mr. Rocha’s English Class</h1>
-            <p class="text-xl font-bold text-red-600 bg-red-100 py-2 px-4 rounded-lg inline-block border border-red-300 shadow-sm">
-                <i class="fa-brands fa-whatsapp"></i> Send PDF results by WhatsApp to Mr. Rocha to get credit: <strong>33-3497-1997</strong>
-            </p>
-        </div>
-        
-        <div class="flex justify-between items-center mb-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <div>
-                <p class="text-lg"><strong>Student Name:</strong> <span id="pdf-name" class="text-indigo-700"></span></p>
-                <p class="text-lg"><strong>Date:</strong> <span id="pdf-date" class="text-indigo-700"></span></p>
-            </div>
-            <div class="text-right">
-                <p class="text-sm text-gray-500">Final Score</p>
-                <p class="text-4xl font-extrabold text-indigo-600" id="pdf-score">0%</p>
-            </div>
-        </div>
-
-        <div class="mb-10 w-[400px] mx-auto">
-            <h3 class="text-center font-bold mb-2">Performance Chart</h3>
-            <canvas id="pdfChart"></canvas>
-        </div>
-
-        <div id="pdf-activities-log" class="space-y-6">
-            <!-- Populated via JS -->
-        </div>
-    </div>
 
     <!-- JavaScript Logic -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // State
-            const state = {
-                currentStep: 0,
-                totalSteps: 7, // 0 to 7
-                scores: {},
-                checked: {},
-                maxScores: { 1: 6, 2: 6, 3: 6, 4: 27, 5: 20 },
-                likertQuestions: [
-                    "I understood the reading about the caveman.",
-                    "I can use the simple past with regular verbs.",
-                    "I learned new vocabulary about the house.",
-                    "I found the matching exercises easy.",
-                    "I enjoyed this worksheet."
-                ]
-            };
+        let currentStep = 0;
+        const totalSteps = 6; // 0 (Intro), 1-5 (Activities), 6 (Results)
+        let chartInstance = null;
 
-            // Word bank for Activity 5
-            const wordBankPairs = [
-                {p: 'experience', pt: 'experienced'}, {p: 'reside', pt: 'resided'}, {p: 'work', pt: 'worked'},
-                {p: 'walk', pt: 'walked'}, {p: 'travel', pt: 'traveled'}, {p: 'use', pt: 'used'},
-                {p: 'cook', pt: 'cooked'}, {p: 'clean', pt: 'cleaned'}, {p: 'require', pt: 'required'},
-                {p: 'gather', pt: 'gathered'}, {p: 'play', pt: 'played'}, {p: 'listen', pt: 'listened'},
-                {p: 'talk', pt: 'talked'}, {p: 'entertain', pt: 'entertained'}, {p: 'enjoy', pt: 'enjoyed'},
-                {p: 'try', pt: 'tried'}, {p: 'believe', pt: 'believed'}, {p: 'hope', pt: 'hoped'},
-                {p: 'happen', pt: 'happened'}, {p: 'help', pt: 'helped'}
-            ];
+        // Ensure date input defaults to today
+        document.getElementById('student-date').valueAsDate = new Date();
 
-            // Setup Activity 5 Word Bank
-            const wordBankContainer = document.getElementById('word-bank');
-            // Shuffle all forms
-            let allWords = [];
-            wordBankPairs.forEach(pair => { allWords.push(pair.pt); });
-            allWords.sort(() => Math.random() - 0.5);
-            allWords.forEach(word => {
-                const span = document.createElement('span');
-                span.className = 'word-tag';
-                span.textContent = word;
-                wordBankContainer.appendChild(span);
+        function updateUI() {
+            // Hide all sections
+            document.querySelectorAll('.activity-section').forEach(sec => {
+                sec.classList.add('hidden');
+                sec.classList.remove('block');
             });
-
-            // Setup Activity 6 Likert
-            const likertTable = document.getElementById('likert-table');
-            state.likertQuestions.forEach((q, idx) => {
-                const tr = document.createElement('tr');
-                tr.className = idx % 2 === 0 ? 'bg-white' : 'bg-gray-50';
-                tr.innerHTML = `
-                    <td class="px-6 py-4 text-sm text-gray-800 font-medium">${q}</td>
-                    ${[1,2,3,4,5].map(val => `
-                        <td class="px-4 py-4 text-center">
-                            <input type="radio" name="likert-${idx}" value="${val}" class="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 act-input">
-                        </td>
-                    `).join('')}
-                `;
-                likertTable.appendChild(tr);
-            });
-
-            // Navigation Elements
-            const sections = document.querySelectorAll('.activity-section');
-            const btnNext = document.getElementById('btn-next');
-            const btnBack = document.getElementById('btn-back');
-            const btnCheck = document.getElementById('btn-check');
-            const btnSubmit = document.getElementById('btn-submit');
-            const progressBar = document.getElementById('progress-bar');
-            const stepNum = document.getElementById('current-step-num');
-
-            function updateUI() {
-                // Show/hide sections
-                sections.forEach((sec, idx) => {
-                    if (idx === state.currentStep) {
-                        sec.classList.remove('hidden');
-                        sec.classList.add('block');
-                    } else {
-                        sec.classList.add('hidden');
-                        sec.classList.remove('block');
-                    }
-                });
-
-                // Update Progress Bar & Indicator
-                let progress = (state.currentStep / state.totalSteps) * 100;
-                progressBar.style.width = `${progress}%`;
-                
-                if(state.currentStep === 0) {
-                    stepNum.innerText = "Intro";
-                } else if(state.currentStep === state.totalSteps) {
-                    stepNum.innerText = "Results";
-                } else {
-                    stepNum.innerText = state.currentStep;
-                }
-
-                // Buttons Logic
-                btnBack.style.display = state.currentStep > 0 ? 'block' : 'none';
-                
-                if (state.currentStep === state.totalSteps) {
-                    // Results page
-                    document.getElementById('nav-controls').style.display = 'none';
-                } else if (state.currentStep === state.totalSteps - 1) {
-                    // Last activity
-                    btnNext.style.display = 'none';
-                    btnSubmit.style.display = 'block';
-                } else {
-                    btnNext.style.display = 'block';
-                    btnSubmit.style.display = 'none';
-                }
-
-                // Check button visibility
-                const currentSec = sections[state.currentStep];
-                const isGradable = currentSec.getAttribute('data-gradable') === 'true';
-                if (isGradable && !state.checked[state.currentStep]) {
-                    btnCheck.style.display = 'block';
-                } else {
-                    btnCheck.style.display = 'none';
-                }
+            
+            // Show current section
+            const currentSection = document.getElementById(`section-${currentStep}`);
+            if(currentSection) {
+                currentSection.classList.remove('hidden');
+                currentSection.classList.add('block');
             }
 
-            // Button Event Listeners
-            btnNext.addEventListener('click', () => {
-                if (state.currentStep < state.totalSteps) {
-                    state.currentStep++;
-                    updateUI();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
+            // Update Header/Progress indicator (Show steps out of 5 for students)
+            const stepNumDisplay = currentStep > 5 ? 5 : currentStep;
+            document.getElementById('current-step-num').innerText = stepNumDisplay;
+            
+            // Progress bar
+            const progress = (currentStep / 5) * 100;
+            document.getElementById('progress-bar').style.width = `${Math.min(progress, 100)}%`;
 
-            btnBack.addEventListener('click', () => {
-                if (state.currentStep > 0) {
-                    state.currentStep--;
-                    updateUI();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
+            // Update Navigation Buttons
+            const prevBtn = document.getElementById('btn-prev');
+            const nextBtn = document.getElementById('btn-next');
 
-            btnCheck.addEventListener('click', () => {
-                checkCurrentSection();
-            });
+            // Prev Button
+            if (currentStep === 0 || currentStep === totalSteps) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
 
-            btnSubmit.addEventListener('click', () => {
-                // Ensure name and date are somewhat filled (basic validation)
-                const nameInput = document.getElementById('student-name').value;
-                if(!nameInput) {
-                    alert("Please enter your name in the Introduction section before submitting.");
-                    state.currentStep = 0;
-                    updateUI();
+            // Next Button text and behavior
+            if (currentStep === totalSteps - 1) {
+                nextBtn.innerHTML = 'Finish & Grade <i class="fa-solid fa-check"></i>';
+                nextBtn.classList.replace('bg-indigo-600', 'bg-green-600');
+                nextBtn.classList.replace('hover:bg-indigo-700', 'hover:bg-green-700');
+            } else if (currentStep === totalSteps) {
+                nextBtn.classList.add('hidden'); // Hide on results page
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right"></i>';
+                nextBtn.classList.replace('bg-green-600', 'bg-indigo-600');
+                nextBtn.classList.replace('hover:bg-green-700', 'hover:bg-indigo-700');
+                nextBtn.classList.remove('hidden');
+            }
+        }
+
+        function navigate(direction) {
+            // Validation before moving next from step 0
+            if (direction === 1 && currentStep === 0) {
+                const name = document.getElementById('student-name').value.trim();
+                if (!name) {
+                    alert("Please enter your name before continuing.");
+                    document.getElementById('student-name').focus();
                     return;
                 }
+            }
 
-                // Auto-check any unchecked gradable sections
-                for(let i = 1; i <= 5; i++) {
-                    if(!state.checked[i]) {
-                        state.currentStep = i; // Temporarily switch context
-                        checkCurrentSection(true); // silent check
-                    }
-                }
+            // Auto-pause media elements if navigating away
+            if (document.getElementById('video1')) {
+                document.getElementById('video1').pause();
+            }
+            if (document.getElementById('audio1')) {
+                document.getElementById('audio1').pause();
+            }
+
+            currentStep += direction;
+            
+            if (currentStep < 0) currentStep = 0;
+            if (currentStep > totalSteps) currentStep = totalSteps;
+
+            if (currentStep === totalSteps) {
+                gradeActivities();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateUI();
+        }
+
+        function gradeActivities() {
+            const sections = [1, 2, 3, 4, 5];
+            const sectionScores = [0, 0, 0, 0, 0];
+            const sectionMaxes = [0, 0, 0, 0, 0];
+            let totalCorrect = 0;
+            let totalInputs = 0;
+
+            sections.forEach((secIndex, arrayIndex) => {
+                const section = document.getElementById(`section-${secIndex}`);
+                const inputs = section.querySelectorAll('.act-input');
                 
-                state.currentStep = state.totalSteps; // Go to results
-                generateResults();
-                updateUI();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            function checkCurrentSection(silent = false) {
-                const sec = sections[state.currentStep];
-                if (!sec || sec.getAttribute('data-gradable') !== 'true') return;
-
-                const inputs = sec.querySelectorAll('.act-input');
-                let score = 0;
-                let total = inputs.length;
-
                 inputs.forEach(input => {
-                    const expected = input.getAttribute('data-answer');
-                    if (!expected) return;
-
-                    let userAnswer = input.value.trim().toLowerCase();
-                    let correctAnswer = expected.trim().toLowerCase();
+                    sectionMaxes[arrayIndex]++;
+                    totalInputs++;
                     
-                    let isCorrect = false;
-                    if(userAnswer === correctAnswer) {
-                        isCorrect = true;
-                    } else if (correctAnswer === 'consonant' && (userAnswer === 'last consonant' || userAnswer === 'last letter')) {
-                        isCorrect = true; // Special allowance for Act 4 Rule
-                    }
+                    const studentAnswer = input.value.trim().toLowerCase();
+                    const correctAnswer = input.getAttribute('data-answer').toLowerCase();
 
-                    if (isCorrect) {
+                    // Remove previous styling
+                    input.classList.remove('input-correct', 'input-incorrect');
+                    
+                    // Simple text matching (could be enhanced with regex for typos)
+                    if (studentAnswer === correctAnswer) {
+                        sectionScores[arrayIndex]++;
+                        totalCorrect++;
                         input.classList.add('input-correct');
-                        score++;
-                        // Add checkmark icon sibling if possible
-                        if(input.tagName === 'INPUT' && input.type==='text' && !silent) {
-                            input.insertAdjacentHTML('afterend', '<i class="fa-solid fa-check text-green-500 ml-1 absolute mt-1"></i>');
-                        }
                     } else {
                         input.classList.add('input-incorrect');
-                        // Show correct answer if wrong
-                        if(!silent && userAnswer !== "") {
-                           input.value = `${input.value} (X -> ${expected})`; 
-                        } else if (!silent && userAnswer === "") {
-                           input.value = `(Missing -> ${expected})`;
+                        // Show correct answer as placeholder if it was wrong
+                        if(input.tagName === 'INPUT' && input.type === 'text') {
+                            input.value = studentAnswer; // Keep their answer
+                            // Optionally create a span showing correct answer, omitted here to keep UI clean
                         }
                     }
                     
-                    input.disabled = true; // Lock it
+                    // Lock inputs after grading
+                    input.disabled = true;
                 });
-
-                state.scores[state.currentStep] = score;
-                state.checked[state.currentStep] = true;
                 
-                if(!silent) updateUI(); // Hide check button
-            }
-
-            let chartInstance = null;
-            let pdfChartInstance = null;
-
-            function generateResults() {
-                let totalScore = 0;
-                let totalPossible = 0;
-                let breakdownHTML = '';
-
-                for(let i = 1; i <= 5; i++) {
-                    const s = state.scores[i] || 0;
-                    const max = state.maxScores[i];
-                    totalScore += s;
-                    totalPossible += max;
-                    breakdownHTML += `<li class="flex justify-between border-b border-gray-100 pb-1"><span>Activity ${i}:</span> <span class="font-bold ${s===max?'text-green-600':'text-gray-800'}">${s} / ${max}</span></li>`;
-                }
-
-                document.getElementById('score-breakdown').innerHTML = breakdownHTML;
-
-                const percentage = Math.round((totalScore / totalPossible) * 100);
-                document.getElementById('final-percentage').innerText = percentage + '%';
-                
-                const feedbackDiv = document.getElementById('feedback-message');
-                if (percentage >= 90) {
-                    feedbackDiv.innerHTML = "<strong>Excellent job!</strong> You have a fantastic understanding of the material. Keep up the great work!";
-                    feedbackDiv.className = "text-gray-700 p-4 bg-green-50 rounded-lg border-l-4 border-green-500 leading-relaxed";
-                } else if (percentage >= 70) {
-                    feedbackDiv.innerHTML = "<strong>Good effort!</strong> You understand most of the concepts, but there is still some room for improvement. Review the mistakes to perfect your skills.";
-                    feedbackDiv.className = "text-gray-700 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500 leading-relaxed";
-                } else {
-                    feedbackDiv.innerHTML = "<strong>Keep practicing!</strong> It looks like you struggled with some sections, especially the Simple Past verbs. We highly recommend reviewing the rules and attempting similar exercises.";
-                    feedbackDiv.className = "text-gray-700 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500 leading-relaxed";
-                }
-
-                // Render Chart
-                const ctx = document.getElementById('scoreChart').getContext('2d');
-                if(chartInstance) chartInstance.destroy();
-                chartInstance = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Correct', 'Incorrect'],
-                        datasets: [{
-                            data: [totalScore, totalPossible - totalScore],
-                            backgroundColor: ['#4f46e5', '#e5e7eb'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: { cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: {duration: 1000} }
-                });
-
-                // Prepare PDF Data Background
-                document.getElementById('pdf-name').innerText = document.getElementById('student-name').value || 'Anonymous Student';
-                document.getElementById('pdf-date').innerText = document.getElementById('student-date').value || new Date().toLocaleDateString();
-                document.getElementById('pdf-score').innerText = percentage + '%';
-
-                // Render PDF Chart (No animation for immediate capture)
-                const ctxPdf = document.getElementById('pdfChart').getContext('2d');
-                if(pdfChartInstance) pdfChartInstance.destroy();
-                pdfChartInstance = new Chart(ctxPdf, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Correct Answers', 'Incorrect Answers'],
-                        datasets: [{
-                            data: [totalScore, totalPossible - totalScore],
-                            backgroundColor: ['#22c55e', '#ef4444'],
-                        }]
-                    },
-                    options: { animation: false, plugins: { legend: { position: 'bottom' } } }
-                });
-
-                // Build Activity Log for PDF
-                const logContainer = document.getElementById('pdf-activities-log');
-                logContainer.innerHTML = '';
-                
-                sections.forEach((sec, idx) => {
-                    if(idx === 0 || idx === 7) return; // Skip intro and results
-                    
-                    const actTitle = sec.querySelector('h2').innerText;
-                    const secScore = state.scores[idx] !== undefined ? `${state.scores[idx]} / ${state.maxScores[idx]}` : 'N/A';
-                    
-                    let html = `
-                        <div class="border border-gray-300 rounded-lg p-4 bg-white mb-4" style="page-break-inside: avoid;">
-                            <div class="flex justify-between border-b-2 border-gray-100 pb-2 mb-3">
-                                <h4 class="font-bold text-lg text-indigo-800">${actTitle}</h4>
-                                <span class="font-bold text-gray-600 bg-gray-100 px-3 py-1 rounded">Score: ${secScore}</span>
-                            </div>
-                            <ul class="text-sm space-y-1">
-                    `;
-
-                    if(idx === 6) { // Likert
-                        const radios = sec.querySelectorAll('input[type="radio"]:checked');
-                        radios.forEach((r, i) => {
-                            html += `<li><span class="text-gray-500">Q${i+1}:</span> Answered: <strong>${r.value} / 5</strong></li>`;
-                        });
-                    } else {
-                        const inputs = sec.querySelectorAll('.act-input');
-                        inputs.forEach((input, i) => {
-                            const expected = input.getAttribute('data-answer');
-                            let val = input.value;
-                            if(input.tagName === 'SELECT') {
-                                val = input.options[input.selectedIndex]?.text || "Not answered";
-                            }
-                            const isCorr = input.classList.contains('input-correct');
-                            const icon = isCorr ? '<span style="color:green;">✔</span>' : '<span style="color:red;">✘</span>';
-                            html += `<li>Item ${i+1}: User entered <strong>"${val}"</strong> ${icon} <span class="text-gray-400 ml-2">(Expected: ${expected})</span></li>`;
-                        });
-                    }
-
-                    html += `</ul></div>`;
-                    logContainer.innerHTML += html;
-                });
-            }
-
-            // PDF Generation
-            document.getElementById('generate-pdf-btn').addEventListener('click', function() {
-                const btn = this;
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-2xl"></i> Generating Document...';
-                btn.disabled = true;
-
-                const element = document.getElementById('pdf-export-container');
-                element.style.display = 'block'; // Unhide for capture
-
-                const studentName = document.getElementById('student-name').value.trim().replace(/\s+/g, '_') || 'Student';
-
-                const opt = {
-                    margin:       [0, 10, 10, 10], // top, left, bottom, right in mm
-                    filename:     `Mr_Rocha_English_${studentName}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, logging: false },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-
-                // Add slight delay to ensure chart renders in display:block mode
-                setTimeout(() => {
-                    html2pdf().set(opt).from(element).save().then(() => {
-                        element.style.display = 'none'; // Hide again
-                        btn.innerHTML = originalText;
-                        btn.disabled = false;
-                    }).catch(err => {
-                        console.error("PDF generation error:", err);
-                        alert("There was an error generating the PDF.");
-                        element.style.display = 'none';
-                        btn.innerHTML = originalText;
-                        btn.disabled = false;
-                    });
-                }, 500);
+                // Update Score text
+                document.getElementById(`score-${secIndex}`).innerText = `${sectionScores[arrayIndex]}/${sectionMaxes[arrayIndex]}`;
             });
 
-            // Initialize Setup
-            updateUI();
-        });
+            // Overall Score calculation
+            const percentage = Math.round((totalCorrect / totalInputs) * 100);
+            document.getElementById('final-score').innerText = `${percentage}%`;
+            
+            const studentName = document.getElementById('student-name').value;
+            document.getElementById('summary-name').innerText = studentName || "Student";
+
+            // Render Chart
+            renderChart(sectionScores, sectionMaxes);
+        }
+
+        function renderChart(scores, maxes) {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            
+            // Calculate percentages per section for balanced radar chart
+            const percentages = scores.map((score, i) => Math.round((score / maxes[i]) * 100));
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Rooms', 'Verbs & Rooms', 'Reading', 'Grammar Rules', 'Cloze'],
+                    datasets: [{
+                        label: 'Section Performance (%)',
+                        data: percentages,
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)', // Indigo
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: {
+                                font: { family: 'Inter', size: 12, weight: '500' },
+                                color: '#4b5563'
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                max: 100,
+                                stepSize: 20,
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function downloadPDF() {
+            // Unhide all sections for the PDF, hide intro video
+            document.querySelectorAll('.activity-section').forEach(sec => {
+                sec.classList.remove('hidden');
+                sec.classList.add('block');
+            });
+            
+            const element = document.getElementById('main-content');
+            const studentName = document.getElementById('student-name').value.trim() || 'Student';
+            
+            const opt = {
+                margin:       [10, 10, 10, 10],
+                filename:     `${studentName}_English_Activity.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generate PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Re-hide sections after generating to restore view
+                updateUI();
+            });
+        }
+
+        // Initialize UI
+        updateUI();
+
     </script>
 </body>
 </html>
